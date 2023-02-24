@@ -20,7 +20,7 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            url: '_test%%env(resolve:DATABASE_URL)%'
+            url: '%env(resolve:TEST_DATABASE_URL)%'
 
 when@prod:
     doctrine:

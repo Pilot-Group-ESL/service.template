@@ -7,10 +7,8 @@ vendor/bin/phpcs src tests && echo "PASS" \
   --level=max \
   --configuration=phpstan-tests.neon \
   tests \
-&& vendor/bin/phpunit tests/Integration \
-  --coverage-text \
 && vendor/bin/phpunit tests/Application \
-  --coverage-text \
+&& vendor/bin/phpunit tests/Integration \
 && vendor/bin/phpunit tests/Unit \
   --coverage-text \
   --coverage-xml=/tmp/coverage/coverage-xml \

@@ -24,7 +24,10 @@ class HealthCheckControllerTest extends WebTestCase
         $content = $response->getContent();
         self::assertNotFalse($content);
 
-        self::assertEquals(['service' => 'OK'], json_decode($content, true));
+        self::assertEquals([
+            'queue' => 'Connected',
+            'database' => 'Connected',
+        ], json_decode($content, true));
     }
 
     public function tearDown(): void

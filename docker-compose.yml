@@ -6,16 +6,18 @@ services:
     container_name: service-template-db
     build: .docker/db
     environment:
-      MYSQL_DATABASE: "sample"
-      MYSQL_ROOT_PASSWORD: "example"
+      MYSQL_DATABASE: "service-template"
+      MYSQL_ROOT_PASSWORD: "top_secret_root_password"
+      MYSQL_USER: "service_template_user"
+      MYSQL_PASSWORD: "user_secret_password"
 
   service-template-db-test:
     container_name: service-template-db-test
     build: .docker/db
     environment:
+      MYSQL_DATABASE: "service-template-test"
       MYSQL_ROOT_PASSWORD: "top_secret_test_password"
-      MYSQL_DATABASE: "service_template_test"
-      MYSQL_USER: "service_template_user"
+      MYSQL_USER: "service_template_test_user"
       MYSQL_PASSWORD: "user_secret_test_password"
     volumes:
       - type: tmpfs
@@ -40,10 +42,8 @@ services:
       APP_SECRET: "bdc6c3bd25b539b62994d825de84875e"
       KERNEL_CLASS: App\Kernel
 
-      DATABASE_USERNAME: "root"
-      DATABASE_PASSWORD: "example"
-      DATABASE_NAME: "sample"
-      DATABASE_URL: "mysql://root:example@service-template-db:3306/service-template?serverVersion=8.0"
+      DATABASE_URL: "mysql://service_template_user:user_secret_password@service-template-db:3306/service-template?serverVersion=8.0"
+      TEST_DATABASE_URL: "mysql://service_template_test_user:user_secret_test_password@service-template-db-test:3306/service-template-test?serverVersion=8.0"
       DOCTRINE_DEV_MODE: "true"
 
       MESSENGER_TRANSPORT_DSN: "service-template-redis"

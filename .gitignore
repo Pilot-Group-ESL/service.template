@@ -20,7 +20,10 @@
 .phpcs-cache
 
 ###> php-stan ###
-.phpstan-*.neon
+/phpstan-*.neon
+
+###> docker ###
+/docker-compose.override.yml
 
 ###> symfony/framework-bundle ###
 /.env.local

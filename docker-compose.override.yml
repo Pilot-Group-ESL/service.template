@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  service-template-fpm:
+    build:
+      context: ./
+      dockerfile: .docker/php/Dockerfile
+      target: dev-xdebug
+
+  service-template-db:
+    ports:
+      - "50001:3306"
+
+  service-template-web:
+    ports:
+      - "50000:80"

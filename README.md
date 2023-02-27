@@ -17,11 +17,12 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - You can now test and commit your new service.
 
 #### Known issues
-- Update to PHPUnit 10 once it is supported by Symfony
+- Update to PHPUnit 10 once it is supported by Symfony (Running 9.6 at the moment)
 - Test database variable does not get loaded from .env.test - hardcoded to config for now
-- Workflow fails at the moment due to DATABASE_URL not present
-- Workflow needs redis added
-- There are some outdated workflow commands that needs updating to newer version
+- Migrations are disabled in the workflow as we do not have any yet. 
+- Workflow uses `--no-scripts` as DATABASE_URL not present (investigate best practice)
+- Clean up DB config to use env variables instead of hard coding. (wait-for-deps, .env)
+- There are some outdated workflow commands that needs updating to newer version (hard deadline end of March)
 - Logging is missing at the moment
 
 #### FINAL STEPS

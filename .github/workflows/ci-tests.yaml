@@ -283,10 +283,6 @@ jobs:
         name: Wait for Startup
         run: |
           docker exec service-template-fpm sh /var/local/bin/wait-for-test-dependencies.sh
-      -
-        name: Create Database
-        run: |
-          docker exec service-template-fpm console doctrine:database:create --env=test --no-interaction
 #      -
 #        name: Run Migrations
 #        run: |

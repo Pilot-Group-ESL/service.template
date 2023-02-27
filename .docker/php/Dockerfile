@@ -116,4 +116,4 @@ RUN /var/local/bin/composer install \
         && cp infection.json.dist infection.json \
         && cp .docker/php/bin/wait-for-test-dependencies.sh /var/local/bin/wait-for-test-dependencies.sh \
         && chmod -x /var/local/bin/wait-for-test-dependencies.sh \
-        && chown -R $USER:$GROUP /var/local/bin
+        && chown -R $USER:$GROUP /var/local/bin \

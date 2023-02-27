@@ -31,7 +31,6 @@ services:
       DATABASE_USERNAME: "template_user"
       DATABASE_PASSWORD: "user_secret_test_password"
       DATABASE_NAME: "template_test"
-      DATABASE_URL: "mysql://template_user:user_secret_test_password@service-template-db-test:3306/service-template?serverVersion=8.0"
       DOCTRINE_DEV_MODE: "true"
 
       PATH: "/var/local/bin:/var/local/src/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"

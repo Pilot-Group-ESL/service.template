@@ -61,7 +61,6 @@ RUN mkdir -p $HOME//bin  \
 FROM dev-base AS dev
 
 USER root
-COPY .docker/php/config/php.ini /usr/local/etc/php/
 
 RUN apk --no-cache add --virtual .build-dependency \
             g++ \

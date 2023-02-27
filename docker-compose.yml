@@ -25,7 +25,9 @@ services:
 
   service-template-redis:
     container_name: service-template-redis
-    build: .docker/redis
+    build:
+      context: ./
+      dockerfile: .docker/redis/Dockerfile
     volumes:
       - ./var/redis:/data/redis
 

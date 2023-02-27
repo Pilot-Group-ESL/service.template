@@ -13,7 +13,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -31,7 +31,7 @@ jobs:
           outputs: type=docker,dest=/tmp/service-template-fpm.tar
       -
         name: Upload PHP Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp/service-template-fpm.tar
@@ -41,7 +41,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -55,7 +55,7 @@ jobs:
           outputs: type=docker,dest=/tmp/service-template-mysql.tar
       -
         name: Upload MYSQL Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: service-template-mysql
           path: /tmp/service-template-mysql.tar
@@ -65,7 +65,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -79,7 +79,7 @@ jobs:
           outputs: type=docker,dest=/tmp/service-template-redis.tar
       -
         name: Upload REDIS Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: service-template-redis
           path: /tmp/service-template-redis.tar
@@ -93,7 +93,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -129,7 +129,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -153,7 +153,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -173,13 +173,13 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -201,7 +201,7 @@ jobs:
               --log-junit=/tmp/coverage/junit.xml
       -
         name: Upload PHP Unit Coverage Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: /tmp/coverage
@@ -213,13 +213,13 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -239,25 +239,25 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
       -
         name: Download MYSQL Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-mysql
           path: /tmp
       -
         name: Download REDIS Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-redis
           path: /tmp
@@ -299,7 +299,7 @@ jobs:
     steps:
       -
         name: Download PHP Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: service-template-fpm
           path: /tmp
@@ -309,7 +309,7 @@ jobs:
           docker load --input /tmp/service-template-fpm.tar
       -
         name: Download Coverage
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: coverage
           path: /tmp/coverage

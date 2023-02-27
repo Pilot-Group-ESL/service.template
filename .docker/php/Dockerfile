@@ -110,6 +110,11 @@ RUN /var/local/bin/composer install \
             --prefer-dist \
             --optimize-autoloader \
             --no-scripts \
+        && cp phpstan-src.neon.dist phpstan-src.neon \
+        && cp phpstan-test.neon.dist phpstan-src.neon \
+        && cp phpunit.xml.dist phpunit.xml \
+        && cp phpcs.xml.dist phpcs.xml.neon \
+        && cp infection.json.dist infection.json \
         && cp .docker/php/bin/wait-for-test-dependencies.sh /var/local/bin/wait-for-test-dependencies.sh \
         && chmod -x /var/local/bin/wait-for-test-dependencies.sh \
         && chown -R $USER:$GROUP /var/local/bin

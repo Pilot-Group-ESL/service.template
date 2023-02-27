@@ -15,6 +15,12 @@ services:
         target: /var/lib/mysql
     command: [ "--default-authentication-plugin=mysql_native_password" ]
 
+  service-template-redis:
+    container_name: service-template-redis
+    build: .docker/redis
+    volumes:
+      - ./var/redis:/data/redis
+
   service-template-fpm:
     container_name: service-template-fpm
     image: pilot-group-esl/service.template:fpm
@@ -34,6 +40,9 @@ services:
       PATH: "/var/local/bin:/var/local/src/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     depends_on:
       - service-template-db-test
+      - service-template-redis
+    links:
+      - service-template-redis
     command: ["tail", "-f", "/dev/null"]
     stdin_open: true
     tty: true

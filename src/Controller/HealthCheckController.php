@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function assert;
-use function dd;
-
 class HealthCheckController extends AbstractController
 {
     public function __construct(
@@ -26,20 +23,23 @@ class HealthCheckController extends AbstractController
     #[Route('/health', name: 'get_heath', methods: ['GET'])]
     public function healthCheck(): Response
     {
+        $dbStatus = 'Not connected';
+        $queueStatus = 'Not connected';
+
         $connection = $this->db->getConnection();
-        assert($connection instanceof Connection);
-        var_dump($connection->getDatabase());
-        try {
-            $connection->connect();
-            $dbStatus = $connection->isConnected() ? 'Connected' : 'Not connected';
-        } catch (Exception $e) {
-            $dbStatus = 'Not connected';
+        if ($connection instanceof Connection) {
+            try {
+                $connection->connect();
+                $dbStatus = $connection->isConnected() ? 'Connected' : 'Not connected';
+            } catch (Exception $e) {
+                //TODO: Add logging here.
+            }
         }
 
         try {
             $queueStatus = $this->queue->isConnected() ? 'Connected' : 'Not connected';
         } catch (RedisException $e) {
-            $queueStatus = 'Not connected';
+            //TODO: Add logging here.
         }
 
         return new JsonResponse([

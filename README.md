@@ -22,6 +22,7 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - Workflow fails at the moment due to DATABASE_URL not present
 - Workflow needs redis added
 - There are some outdated workflow commands that needs updating to newer version
+- Logging is missing at the moment
 
 #### FINAL STEPS
 - Remove the above section from documentation

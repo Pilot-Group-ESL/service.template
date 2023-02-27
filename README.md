@@ -56,7 +56,7 @@ docker exec -ti service-template-fpm composer install
 #### Create files from dist
 ```sh
 cp phpstan-src.neon.dist phpstan-src.neon
-cp phpstan-test.neon.dist phpstan-src.neon
+cp phpstan-tests.neon.dist phpstan-tests.neon
 cp phpunit.xml.dist phpunit.xml
 cp phpcs.xml.dist phpcs.xml.neon
 cp infection.json.dist infection.json

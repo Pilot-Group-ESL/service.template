@@ -1,4 +1,6 @@
 {
+    "name": "pilot-group-esl/service.template",
+    "description": "Template repository for ESL services",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",

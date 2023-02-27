@@ -39,6 +39,8 @@ services:
       DATABASE_NAME: "service-template-test"
       DOCTRINE_DEV_MODE: "true"
 
+      MESSENGER_TRANSPORT_DSN: "service-template-redis"
+
       PATH: "/var/local/bin:/var/local/src/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     depends_on:
       - service-template-db-test

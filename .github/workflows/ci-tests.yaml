@@ -19,7 +19,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Build PHP Image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: .docker/php/Dockerfile
@@ -47,7 +47,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Build Mysql Image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: .docker/db/Dockerfile
@@ -71,7 +71,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Build Redis Image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: .docker/redis/Dockerfile

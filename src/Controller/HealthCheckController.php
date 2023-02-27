@@ -28,6 +28,7 @@ class HealthCheckController extends AbstractController
     {
         $connection = $this->db->getConnection();
         assert($connection instanceof Connection);
+        var_dump($connection->getDatabase());
         try {
             $connection->connect();
             $dbStatus = $connection->isConnected() ? 'Connected' : 'Not connected';

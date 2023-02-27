@@ -1,10 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '15'
+        server_version: '8'
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -20,7 +17,10 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            url: '%env(resolve:TEST_DATABASE_URL)%'
+            url: 'mysql://service_template_test_user:user_secret_test_password@service-template-db-test:3306/service-template-test'
+            # TODO: Investigate why this does not work
+            #url: '_test%%env(DATABASE_URL)%'
+            server_version: '8'
 
 when@prod:
     doctrine:

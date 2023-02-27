@@ -16,6 +16,13 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - Add your project PR URL to .github/pull_request_template.md
 - You can now test and commit your new service.
 
+#### Known issues
+- Update to PHPUnit 10 once it is supported by Symfony
+- Test database variable does not get loaded from .env.test - hardcoded to config for now
+- Workflow fails at the moment due to DATABASE_URL not present
+- Workflow needs redis added
+- There are some outdated workflow commands that needs updating to newer version
+
 #### FINAL STEPS
 - Remove the above section from documentation
 - Test and push your new service as below

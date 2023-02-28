@@ -1,0 +1,41 @@
+###> JetBrains/PHPStorm
+/.idea
+
+###> vendor
+/vendor
+
+###> symfony/var
+/var
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+.phpunit
+/coverage
+
+###> infection ###
+/infection.log
+
+###> php-cs ###
+.phpcs-cache
+
+###> php-stan ###
+/phpstan-*.neon
+
+###> docker ###
+/docker-compose.override.yml
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###

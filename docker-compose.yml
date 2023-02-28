@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+
+  service-template-db:
+    container_name: service-template-db
+    build: .docker/db
+    environment:
+      MYSQL_DATABASE: "service-template"
+      MYSQL_ROOT_PASSWORD: "top_secret_root_password"
+      MYSQL_USER: "service_template_user"
+      MYSQL_PASSWORD: "user_secret_password"
+
+  service-template-db-test:
+    container_name: service-template-db-test
+    build: .docker/db
+    environment:
+      MYSQL_DATABASE: "service-template-test"
+      MYSQL_ROOT_PASSWORD: "top_secret_test_password"
+      MYSQL_USER: "service_template_test_user"
+      MYSQL_PASSWORD: "user_secret_test_password"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/mysql
+
+  service-template-redis:
+    container_name: service-template-redis
+    build:
+      context: ./
+      dockerfile: .docker/redis/Dockerfile
+    volumes:
+      - ./var/redis:/data/redis
+
+  service-template-fpm:
+    container_name: service-template-fpm
+    build:
+      context: ./
+      dockerfile: .docker/php/Dockerfile
+      target: dev
+    environment:
+      PHP_IDE_CONFIG: "serverName=service-template"
+
+      APP_ENV: "dev"
+      APP_SECRET: "bdc6c3bd25b539b62994d825de84875e"
+      KERNEL_CLASS: App\Kernel
+
+      DATABASE_HOST: "service-template-db:3306"
+      DATABASE_USERNAME: "service_template_user"
+      DATABASE_PASSWORD: "user_secret_password"
+      DATABASE_NAME: "service-template"
+      DOCTRINE_DEV_MODE: "true"
+
+      MESSENGER_TRANSPORT_DSN: "service-template-redis"
+
+      PATH: "/var/local/bin:/var/local/src/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - service-template-db
+      - service-template-redis
+    volumes:
+      - ./:/var/local/src:delegated
+      - ~/.gitconfig:/etc/gitconfig:delegated
+    links:
+      - service-template-redis
+    stdin_open: true
+    tty: true
+
+  service-template-web:
+    container_name: service-template-web
+    build: .docker/web
+    depends_on:
+      - service-template-fpm
+    volumes:
+      - ./:/var/local/src:delegated
+    ports:
+      - "50000:80"

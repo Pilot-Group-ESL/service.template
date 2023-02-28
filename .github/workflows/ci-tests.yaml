@@ -1,0 +1,325 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build-fpm:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build PHP Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: .docker/php/Dockerfile
+          target: test
+          build-args: |
+            UID=1001
+            GID=116
+          tags: pilot-group-esl/service.template:fpm
+          outputs: type=docker,dest=/tmp/service-template-fpm.tar
+      -
+        name: Upload PHP Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp/service-template-fpm.tar
+
+  build-mysql:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build Mysql Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: .docker/db/Dockerfile
+          tags: pilot-group-esl/service.template:mysql
+          outputs: type=docker,dest=/tmp/service-template-mysql.tar
+      -
+        name: Upload MYSQL Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: service-template-mysql
+          path: /tmp/service-template-mysql.tar
+
+  build-redis:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build Redis Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: .docker/redis/Dockerfile
+          tags: pilot-group-esl/service.template:redis
+          outputs: type=docker,dest=/tmp/service-template-redis.tar
+      -
+        name: Upload REDIS Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: service-template-redis
+          path: /tmp/service-template-redis.tar
+
+  php-stan:
+    needs: build-fpm
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load Docker image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: PHP Stan Check src Directory
+        run: |
+          docker run pilot-group-esl/service.template:fpm \
+            vendor/bin/phpstan analyse \
+              --level=max \
+              --configuration=phpstan-src.neon \
+              src \
+            && echo "No issues detected!"
+      -
+        name: PHP Stan Check tests Directory
+        run: |
+          docker run pilot-group-esl/service.template:fpm \
+            vendor/bin/phpstan analyse \
+              --level=max \
+              --configuration=phpstan-tests.neon \
+              tests \
+            && echo "No issues detected!"
+
+  coding-standards:
+    needs: build-fpm
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: PHP CS
+        run: |
+          docker run pilot-group-esl/service.template:fpm \
+            vendor/bin/phpcs src tests \
+          && echo "No issues detected!"
+          
+  composer-validate:
+    needs: build-fpm
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: Composer Validate
+        run: |
+          docker run pilot-group-esl/service.template:fpm \
+            /var/local/bin/composer validate --strict
+
+  phpunit-unit-test:
+    needs: [build-fpm]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load PHP Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: Create Coverage Directory
+        run: |
+          mkdir -p /tmp/coverage
+      -
+        name: PHPUnit Unit Tests
+        run: |
+          docker run --mount type=bind,source=/tmp/coverage,target=/tmp/coverage pilot-group-esl/service.template:fpm \
+            vendor/bin/phpunit tests/Unit \
+              --coverage-text \
+              --coverage-xml=/tmp/coverage/coverage-xml \
+              --log-junit=/tmp/coverage/junit.xml
+      -
+        name: Upload PHP Unit Coverage Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: /tmp/coverage
+
+
+  phpunit-integration-test:
+    needs: [build-fpm]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load PHP Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: PHPUnit unit tests
+        run: |
+          docker run pilot-group-esl/service.template:fpm \
+            vendor/bin/phpunit tests/Integration --coverage-text
+
+  phpunit-application-test:
+    needs: [build-fpm, build-mysql, build-redis]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Download MYSQL Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-mysql
+          path: /tmp
+      -
+        name: Download REDIS Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-redis
+          path: /tmp
+      -
+        name: Load PHP Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: Load MYSQL Docker image
+        run: |
+          docker load --input /tmp/service-template-mysql.tar
+      -
+        name: Load REDIS Docker image
+        run: |
+          docker load --input /tmp/service-template-redis.tar
+      -
+        name: Start docker-compose
+        run: |
+          docker-compose --file=docker-compose-test.yml up \
+              --remove-orphans \
+              --detach
+      -
+        name: Wait for Startup
+        run: |
+          docker exec service-template-fpm sh /var/local/bin/wait-for-test-dependencies.sh
+#      -
+#        name: Run Migrations
+#        run: |
+#          docker exec service-template-fpm console doctrine:migrations:migrate --env=test --no-interaction
+      -
+        name: PHPUnit application tests
+        run: |
+          docker exec service-template-fpm \
+            vendor/bin/phpunit tests/Application
+
+  infection-tests:
+    needs: [phpunit-unit-test]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Download PHP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: service-template-fpm
+          path: /tmp
+      -
+        name: Load PHP Docker Image
+        run: |
+          docker load --input /tmp/service-template-fpm.tar
+      -
+        name: Download Coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: /tmp/coverage
+      -
+        name: Infection Mutation Testing
+        run: |
+          docker run --mount type=bind,source=/tmp/coverage,target=/tmp/coverage pilot-group-esl/service.template:fpm vendor/bin/infection \
+            --min-covered-msi=100 -j$(nproc) \
+            --no-progress \
+            --coverage=/tmp/coverage \
+            --skip-initial-tests \
+            --only-covered \
+            --ignore-msi-with-no-mutations

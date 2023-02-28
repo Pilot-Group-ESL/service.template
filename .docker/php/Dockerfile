@@ -82,6 +82,7 @@ RUN apk --no-cache add --virtual .build-dependency \
             g++ \
             autoconf \
             make \
+            linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk del .build-dependency

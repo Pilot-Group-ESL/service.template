@@ -7,6 +7,7 @@ vendor/bin/phpcs src tests && echo "PASS" \
   --level=max \
   --configuration=phpstan-tests.neon \
   tests \
+&& export SYMFONY_DEPRECATIONS_HELPER="max[direct]=0&max[indirect]=999999" \
 && vendor/bin/phpunit tests/Application \
 && vendor/bin/phpunit tests/Integration \
 && vendor/bin/phpunit tests/Unit \

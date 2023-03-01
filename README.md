@@ -27,7 +27,7 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - Symfony\Bridge\Monolog\Logger currently shows a deprecation notice. Monitor the issue [here](https://github.com/symfony/symfony/issues/47096) 
 - SYMFONY_DEPRECATIONS_HELPER is miss configured for some reason and deprecation notice causes a non 0 exit code. Investigate a solution.
   ```sh
-  # Remove this from test.sh and workflow
+  # Remove this from test.sh
   export SYMFONY_DEPRECATIONS_HELPER="max[direct]=0&max[indirect]=999999"
   ```
 

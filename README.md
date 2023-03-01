@@ -23,7 +23,12 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - Migrations are disabled in the workflow as we do not have any yet. 
 - Workflow uses `--no-scripts` as DATABASE_URL not present (investigate best practice)
 - Clean up DB config to use env variables instead of hard coding. (wait-for-deps, .env)
-- Logging is missing at the moment
+- Symfony\Bridge\Monolog\Logger currently shows a deprecation notice. Monitor the issue [here](https://github.com/symfony/symfony/issues/47096) 
+- SYMFONY_DEPRECATIONS_HELPER is miss configured for some reason and deprecation notice causes a non 0 exit code. Investigate a solution.
+  ```sh
+  # Remove this from test.sh and workflow
+  export SYMFONY_DEPRECATIONS_HELPER="max[direct]=0&max[indirect]=999999"
+  ```
 
 #### FINAL STEPS
 - Remove the above section from documentation

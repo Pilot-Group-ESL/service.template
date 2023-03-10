@@ -2,6 +2,24 @@ version: "3.8"
 
 services:
 
+  service-template-reverse-proxy:
+    image: traefik:v2.9
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  service-template-web:
+    container_name: service-template-web
+    build: .docker/web
+    depends_on:
+      - service-template-fpm
+    volumes:
+      - ./:/var/local/src:delegated
+    labels:
+      - "traefik.http.routers.service-template.rule=Host(`service-template.localhost`)"
+
   service-template-db:
     container_name: service-template-db
     build: .docker/db
@@ -65,13 +83,3 @@ services:
       - service-template-redis
     stdin_open: true
     tty: true
-
-  service-template-web:
-    container_name: service-template-web
-    build: .docker/web
-    depends_on:
-      - service-template-fpm
-    volumes:
-      - ./:/var/local/src:delegated
-    ports:
-      - "50000:80"

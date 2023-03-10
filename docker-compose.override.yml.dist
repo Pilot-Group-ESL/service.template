@@ -12,8 +12,4 @@ services:
 
   service-template-db:
     ports:
-      - "50001:3306"
-
-  service-template-web:
-    ports:
-      - "50000:80"
+      - "50100:3306"

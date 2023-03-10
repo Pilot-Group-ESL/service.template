@@ -12,8 +12,9 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 #### Rename the service in the docker-compose files
 - Global replace "service-template-" to match your project name.
 - Global replace "service_template_" to match your project name. 
+- Global replace "service-template" to match your project name.
 - Global replace pilot-group-esl/service.template to your new service name
-- Add your project PR URL to .github/pull_request_template.md
+- Add your project JIRA ticket URL to .github/pull_request_template.md
 - Check your `MYSQL_USER` for both the test and normal db in your `docker-compose.yml` and if its longer then 32 chars then find and replace in the whole project for something appropriate. 
 - You can now test and commit your new service.
 

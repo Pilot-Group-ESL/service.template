@@ -100,10 +100,15 @@ docker exec -ti service-template-fpm console doctrine:migrations:migrate --env=t
 At the moment you will need to repeat this if you rebuild the project or if you kill / remove your containers.
 
 #### Check the service status
-Go to http://service-template.localhost/health
+
+Get the project IP_APPDRESS. 
+```sh
+  ./bin/web-ip.sh
+```
+
+Go to http://{IP_ADDRESS}}/health
 
 Keep in mind, it might take a few moment for the database to allow connections. 
-
 
 #### Run individual tests for the whole project
 ```sh

@@ -18,7 +18,7 @@ class HealthCheckControllerTest extends WebTestCase
 
     public function testHealthCheckReturnsOK(): void
     {
-        $this->client->request('GET', '/health');
+        $this->client->request('GET', '/api/v1/health');
 
         $response = $this->client->getResponse();
         $content = $response->getContent();

@@ -2,6 +2,16 @@ version: "3.8"
 
 services:
 
+  service-template-web:
+    container_name: service-template-web
+    build: .docker/web
+    depends_on:
+      - service-template-fpm
+    volumes:
+      - ./:/var/local/src:delegated
+    ports:
+      - "80"
+
   service-template-db:
     container_name: service-template-db
     build: .docker/db
@@ -65,13 +75,3 @@ services:
       - service-template-redis
     stdin_open: true
     tty: true
-
-  service-template-web:
-    container_name: service-template-web
-    build: .docker/web
-    depends_on:
-      - service-template-fpm
-    volumes:
-      - ./:/var/local/src:delegated
-    ports:
-      - "50000:80"

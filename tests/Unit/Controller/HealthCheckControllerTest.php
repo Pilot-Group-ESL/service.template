@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Controller;
 
-use App\Controller\HealthCheckController;
+use App\Controller\API\V1\HealthCheckController;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;

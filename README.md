@@ -12,13 +12,13 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 #### Rename the service in the docker-compose files
 - Global replace "service-template-" to match your project name.
 - Global replace "service_template_" to match your project name. 
+- Global replace "service-template" to match your project name.
 - Global replace pilot-group-esl/service.template to your new service name
-- Add your project PR URL to .github/pull_request_template.md
+- Add your project JIRA ticket URL to .github/pull_request_template.md
 - Check your `MYSQL_USER` for both the test and normal db in your `docker-compose.yml` and if its longer then 32 chars then find and replace in the whole project for something appropriate. 
 - You can now test and commit your new service.
 
 #### Known issues
-- Web containers (and databe if you need access to the) requires port exposed to host. Currently, this is configured manually. Investigate a better solution.  
 - Update to PHPUnit 10 once it is supported by Symfony (Running 9.6 at the moment)
 - Test database variable does not get loaded from .env.test - hardcoded to config for now
 - Migrations are disabled in the workflow as we do not have any yet. 
@@ -98,6 +98,16 @@ docker exec -ti service-template-fpm console doctrine:migrations:migrate --env=t
 
 At the moment you will need to repeat this if you rebuild the project or if you kill / remove your containers.
 
+#### Check the service status
+
+Get the project IP_APPDRESS. 
+```sh
+  ./bin/web-ip.sh
+```
+
+Go to http://{IP_ADDRESS}}/api/v1/health
+
+Keep in mind, it might take a few moment for the database to allow connections. 
 
 #### Run individual tests for the whole project
 ```sh

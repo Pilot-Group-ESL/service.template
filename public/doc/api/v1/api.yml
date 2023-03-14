@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: Service Template
+  version: 1.0.0
+servers:
+  - url: https://ADDRR/api/v1
+    description: Development environment
+  - url: https://tbc.uat/api/v1
+    description: Staging environment
+  - url: https://tbc.prod/api/v1
+    description: Production environment
+paths:
+  /health:
+    get:
+      description: |
+        Health check endpoint
+      responses:
+        '200':
+          description: |
+            Service status OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: redis
+                  data:
+                    type: string
+                    example: "Connected"
+        '503':
+          description: |
+            Service status Not Available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: redis
+                  data:
+                    type: string
+                    example: "Not connected"

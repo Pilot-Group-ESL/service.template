@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API\V1;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -24,7 +24,7 @@ class HealthCheckController extends AbstractController
     ) {
     }
 
-    #[Route('/health', name: 'get_heath', methods: ['GET'])]
+    #[Route('/api/v1/health', name: 'get_health', methods: ['GET'])]
     public function healthCheck(): Response
     {
         $dbStatus = 'Not connected';

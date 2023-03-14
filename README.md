@@ -106,7 +106,7 @@ Get the project IP_APPDRESS.
   ./bin/web-ip.sh
 ```
 
-Go to http://{IP_ADDRESS}}/health
+Go to http://{IP_ADDRESS}}/api/v1/health
 
 Keep in mind, it might take a few moment for the database to allow connections. 
 

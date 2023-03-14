@@ -19,7 +19,6 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 - You can now test and commit your new service.
 
 #### Known issues
-- Web containers currently use a very simple reverse proxy setup via `Traefik`. Investigate in more details. 
 - Update to PHPUnit 10 once it is supported by Symfony (Running 9.6 at the moment)
 - Test database variable does not get loaded from .env.test - hardcoded to config for now
 - Migrations are disabled in the workflow as we do not have any yet. 

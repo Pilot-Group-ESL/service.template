@@ -4,7 +4,9 @@ services:
 
   service-template-web:
     container_name: service-template-web
-    build: .docker/web
+    build:
+      context: ./
+      dockerfile: .docker/web/Dockerfile
     depends_on:
       - service-template-fpm
     volumes:

@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Redis;
 use RedisException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 use function json_decode;
 use function sprintf;
@@ -50,12 +51,16 @@ class HealthCheckControllerTest extends MockeryTestCase
         $this->connection->expects()->connect()->andReturnTrue();
         $this->connection->expects()->isConnected()->andReturnTrue();
         $result = $this->subject->healthCheck();
+        self::assertEquals(Response::HTTP_OK, $result->getStatusCode());
         self::assertInstanceOf(JsonResponse::class, $result);
         $content = $result->getContent();
         self::assertIsString($content);
         self::assertEquals([
-            'redis' => 'Connected',
-            'database' => 'Connected',
+            'status' => 'OK',
+            'services' => [
+                'redis' => 'Connected',
+                'database' => 'Connected',
+            ],
         ], json_decode($content, true));
     }
 
@@ -65,11 +70,15 @@ class HealthCheckControllerTest extends MockeryTestCase
         $this->redis->expects()->isConnected()->andReturnTrue();
         $result = $this->subject->healthCheck();
         self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $result->getStatusCode());
         $content = $result->getContent();
         self::assertIsString($content);
         self::assertEquals([
-            'redis' => 'Connected',
-            'database' => 'Not connected',
+            'status' => 'Degraded',
+            'services' => [
+                'redis' => 'Connected',
+                'database' => 'Not connected',
+            ],
         ], json_decode($content, true));
     }
 
@@ -85,11 +94,15 @@ class HealthCheckControllerTest extends MockeryTestCase
         );
         $result = $this->subject->healthCheck();
         self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $result->getStatusCode());
         $content = $result->getContent();
         self::assertIsString($content);
         self::assertEquals([
-            'redis' => 'Connected',
-            'database' => 'Not connected',
+            'status' => 'Degraded',
+            'services' => [
+                'redis' => 'Connected',
+                'database' => 'Not connected',
+            ],
         ], json_decode($content, true));
     }
 
@@ -111,11 +124,15 @@ class HealthCheckControllerTest extends MockeryTestCase
         );
         $result = $this->subject->healthCheck();
         self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $result->getStatusCode());
         $content = $result->getContent();
         self::assertIsString($content);
         self::assertEquals([
-            'redis' => 'Not connected',
-            'database' => 'Not connected',
+            'status' => 'Degraded',
+            'services' => [
+                'redis' => 'Not connected',
+                'database' => 'Not connected',
+            ],
         ], json_decode($content, true));
     }
 
@@ -126,12 +143,16 @@ class HealthCheckControllerTest extends MockeryTestCase
         $this->connection->expects()->connect()->andReturnTrue();
         $this->connection->expects()->isConnected()->andReturnFalse();
         $result = $this->subject->healthCheck();
+        self::assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $result->getStatusCode());
         self::assertInstanceOf(JsonResponse::class, $result);
         $content = $result->getContent();
         self::assertIsString($content);
         self::assertEquals([
-            'redis' => 'Not connected',
-            'database' => 'Not connected',
+            'status' => 'Degraded',
+            'services' => [
+                'redis' => 'Not connected',
+                'database' => 'Not connected',
+            ],
         ], json_decode($content, true));
     }
 

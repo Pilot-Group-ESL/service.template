@@ -9,7 +9,7 @@
 git clone git@github.com:pilot-group-esl/service.training-api.git
 ```
 
-#### Rename the service in the docker-compose files
+#### Rename the service in the docker compose files
 - Global replace "service-template-" to match your project name.
 - Global replace "service_template_" to match your project name. 
 - Global replace "service-template" to match your project name.
@@ -37,8 +37,8 @@ git clone git@github.com:pilot-group-esl/service.training-api.git
 
 ### Requirements
 ```
-docker >= v20
-docker-compose >= v1.27 
+docker >= v23
+docker compose >= v2.17
 ```
 
 ### Basic usage
@@ -70,9 +70,9 @@ Run the following commands:
 mkdir -p var/log
 mkdir -p var/cache
 mkdir -p var/redis
-docker-compose pull
-docker-compose build --no-cache
-docker-compose up
+docker compose pull
+docker compose build --no-cache
+docker compose up
 docker exec -ti service-template-fpm composer install
 ```
 
@@ -159,8 +159,8 @@ docker exec -ti service-template-fpm sh bin/test.sh
 
 #### Rebuild the project images
 ```sh
-docker-compose kill \
-  && docker-compose rm  -f \
-  && docker-compose build --no-cache \
-  && docker-compose up --remove-orphans 
+docker compose kill \
+  && docker compose rm  -f \
+  && docker compose build --no-cache \
+  && docker compose up --remove-orphans 
 ```

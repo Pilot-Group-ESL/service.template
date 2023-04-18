@@ -9,7 +9,7 @@
 git clone git@github.com:pilot-group-esl/service.training-api.git
 ```
 
-#### Rename the service in the docker compose files
+#### Rename the service in the docker-compose*.yml files
 - Global replace "service-template-" to match your project name.
 - Global replace "service_template_" to match your project name. 
 - Global replace "service-template" to match your project name.

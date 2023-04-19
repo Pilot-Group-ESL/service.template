@@ -1,4 +1,4 @@
-composer validate && echo "COMPOSER IS VALID" \
+composer validate --strict && echo "COMPOSER IS VALID" \
 && vendor/bin/phpcs src tests && echo "CODING STANDARDS PASS" \
 && vendor/bin/phpstan analyse \
   --level=max \

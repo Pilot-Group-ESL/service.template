@@ -52,9 +52,22 @@ class HealthCheckController extends AbstractController
             );
         }
 
+        if ($redisStatus === 'Not connected' || $dbStatus === 'Not connected') {
+            return new JsonResponse([
+                'status' => 'Degraded',
+                'services' => [
+                    'redis' => $redisStatus,
+                    'database' => $dbStatus,
+                ],
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
+        }
+
         return new JsonResponse([
-            'redis' => $redisStatus,
-            'database' => $dbStatus,
+            'status' => 'OK',
+            'services' => [
+                'redis' => $redisStatus,
+                'database' => $dbStatus,
+            ],
         ], Response::HTTP_OK);
     }
 }

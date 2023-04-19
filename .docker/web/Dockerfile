@@ -1,3 +1,3 @@
 FROM nginx:1.22-alpine
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY .docker/web/config/nginx.conf /etc/nginx/conf.d/default.conf

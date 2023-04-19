@@ -21,25 +21,54 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: redis
-                  data:
-                    type: string
-                    example: "Connected"
+                $ref: '#/components/schemas/HealthCheckResponse'
+              example:
+                status: 'OK'
+                services:
+                  redis: 'Connected'
+                  database: 'Connected'
         '503':
           description: |
             Service status Not Available
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: redis
-                  data:
-                    type: string
-                    example: "Not connected"
+                $ref: '#/components/schemas/HealthCheckResponse'
+              example:
+                status: 'Degraded'
+                services:
+                  redis: 'Connected'
+                  database: 'Not connected'
+
+
+components:
+
+  schemas:
+    HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ OK, Degraded ]
+          description: >
+            Status:
+             * `OK` - Connection to all services are up
+             * `Degraded` - Connection to one or more services are down
+        services:
+          type: object
+          properties:
+            redis:
+              type: string
+              enum: [ Connected, Not connected ]
+              description: >
+                Status:
+                 * `Connected` - Connection to the service is established
+                 * `Not connected` - Connection is down, check logs or contact the system administrator
+            database:
+              type: string
+              enum: [ Connected, Not connected ]
+              description: >
+                Status:
+                 * `Connected` - Connection to the service is established
+                 * `Not connected` - Connection is down, check logs or contact the system administrator
+      

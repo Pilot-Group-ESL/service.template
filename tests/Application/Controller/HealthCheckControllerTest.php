@@ -25,8 +25,11 @@ class HealthCheckControllerTest extends WebTestCase
         self::assertNotFalse($content);
 
         self::assertEquals([
-            'redis' => 'Connected',
-            'database' => 'Connected',
+            'status' => 'OK',
+            'services' => [
+                'redis' => 'Connected',
+                'database' => 'Connected',
+            ],
         ], json_decode($content, true));
     }
 

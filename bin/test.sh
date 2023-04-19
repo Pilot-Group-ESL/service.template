@@ -1,4 +1,5 @@
-vendor/bin/phpcs src tests && echo "PASS" \
+composer validate && echo "COMPOSER IS VALID" \
+&& vendor/bin/phpcs src tests && echo "CODING STANDARDS PASS" \
 && vendor/bin/phpstan analyse \
   --level=max \
   --configuration=phpstan-src.neon \
